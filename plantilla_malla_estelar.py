@@ -10,6 +10,8 @@ Original file is located at
 import math
 import numpy as np
 import pandas as pd
+from Estelares import transform_from_json_to_list
+from Estelares import PuntosImagen as Puntos_Imagen
 #M+numero de estacion+numero de camara +DD/Mes/AAAA  HH:MM:SS
 #Estas son las ecuaciones 5.2(pag 37)
 def calcularXestandar(Azimut,Altitud,AzimutObservador,AltitudObservador):
@@ -24,44 +26,9 @@ def calcularYestandar(Azimut,Altitud,AzimutObservador,AltitudObservador):
 
   return  y
 
-#Puntos Imagen sería las estrellas de referencia que se llegan a encontrar en la imagen
-#X y Y son las coordenadas de imagen, en Y es el valor que resulta de restar el valor del ancho total de la imagen
-#Ejemplo: Tamaño de imagen(720x560) Se localiza la estrella en 650,300 en puntos imagen sería (650,560-300)
 
-PuntosImagen =[{
+PuntosImagen:list=transform_from_json_to_list("src/PuntosImagen.json")
 
-		"Nombre": "Alpheratz",
-		"Ascension": 2.3443,
-		"Declinacion": 29.0926,
-		"X": 613,
-		"Y": 334
-	},
-    {
-
-		"Nombre": "Algenib",
-		"Ascension": 3.5525,
-		"Declinacion": 15.1861,
-		"X": 323,
-		"Y": 374
-	},
-    {
-
-		"Nombre": "Markab",
-		"Ascension": 346.4246,
-		"Declinacion": 15.2080,
-		"X": 327,
-		"Y": 37
-	},
-    {
-
-		"Nombre": "Funda",
-		"Ascension": 345.9486,
-		"Declinacion": 28.0871,
-		"X": 593,
-		"Y": 43
-	}
-
-	]
 
 #Esta parte son las ecuaciones 5.1
 
@@ -70,8 +37,8 @@ D = 0
 
 #Se obtiene la A y D haciendo la suma de todas las ascenciones y declinaciones
 for punto in PuntosImagen:
-  A = A + math.radians(punto['Ascension'])
-  D = D + math.radians(punto['Declinacion'])
+  A = A + math.radians(punto.ascencion)#Primero usa radianes
+  D = D + math.radians(punto.declinacion)
 
 A = (1/len(PuntosImagen)) * A
 D = (1/len(PuntosImagen)) * D
@@ -79,14 +46,11 @@ print('A:' + str(A))
 print('D:' + str(D))
 print('A:' +str(math.degrees(A)))
 print('D:'+ str(math.degrees(D)))
-Punto_AD={
 
-		"Nombre": "Punto A,D",
-		"Ascension": math.degrees(A),
-		"Declinacion": math.degrees(D),
-		"X": 0,
-		"Y": 0
-	}
+
+
+Punto_AD= Puntos_Imagen("Punto A,D", math.degrees(A),math.degrees(D),0,0)#luego grados?
+
 #Esta parte es para generar un archivo excell con la informacion de las estreellas de referencia
 PuntosImagen.append(Punto_AD)
 PuntosImagenDF = pd.DataFrame(PuntosImagen)
@@ -94,12 +58,12 @@ PuntosImagenDF.to_excel("Puntos.xlsx")
 
 #Se calcula las coordenadas estandar para poder calcular los parametros 5.3
 for punto in PuntosImagen:
-  punto['xi'] = calcularXestandar(math.radians(punto['Ascension']),math.radians(punto['Declinacion']),A,D)
+  punto.xi = calcularXestandar(math.radians(punto.ascencion),math.radians(punto.declinacion),A,D)
   #print(punto['xi'])
-  punto['psi'] = calcularYestandar(math.radians(punto['Ascension']),math.radians(punto['Declinacion']),A,D)
+  punto.psi = calcularYestandar(math.radians(punto.ascencion),math.radians(punto.declinacion),A,D)
   #print(punto['psi'])
   #print("\n")
-PuntosImagen
+  #PuntosImagen
 
 #Parametros de la imagen (5.3)
 
@@ -111,13 +75,13 @@ ParamE = 0
 ParamF = 0
 ParamG = 0
 for punto in PuntosImagen:
-  ParamA = ParamA + punto['X']
-  ParamB = ParamB + punto['Y']
-  ParamC = ParamC + punto['xi']
-  ParamD = ParamD + punto['psi']
-  ParamE = ParamE + (math.pow(punto['X'],2) + math.pow(punto['Y'],2))
-  ParamF = ParamF + ((punto['xi'] * punto['X'])+(punto['psi']*punto['Y']))
-  ParamG = ParamG + ((punto['xi'] * punto['Y'])-(punto['psi']*punto['X']))
+  ParamA = ParamA + punto.x
+  ParamB = ParamB + punto.y
+  ParamC = ParamC + punto.xi
+  ParamD = ParamD + punto.psi
+  ParamE = ParamE + (math.pow(punto.x,2) + math.pow(punto.y,2))
+  ParamF = ParamF + ((punto.xi * punto.x)+(punto.psi*punto.y))
+  ParamG = ParamG + ((punto.xi * punto.y)-(punto.psi*punto.x))
 print('ParamA: ' + str(ParamA))
 print('ParamB: ' + str(ParamB))
 print('ParamC: ' + str(ParamC))
@@ -169,11 +133,7 @@ def calcularxi(u1,u2,u3,u5,X,Y):
 def calcularpsi(u1,u2,u4,u5,X,Y):
   return (u5) * ((-1*u2*X)+(u1*Y)+(u4))
 
-#EstRef es las Estrellas con las que se desea generar la malla.
-#Normalmente se tomarían de un catálogo que es un archivo cvs
-#en el cual solo se tendría nombre y coordenadas estelares.
-#En estos ejemplos se tiene X y Y para poder calcula el error que tiene el
-#software al generar la malla.
+
 EstRef =[{
 
 		"Nombre": "Alpheratz",
