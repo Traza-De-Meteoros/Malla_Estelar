@@ -26,9 +26,20 @@ class EstRef(PuntosImagen):
     En estos ejemplos se tiene X y Y para poder calcula el error que tiene el
     software al generar la malla.
     """
-    def __init__(self, nombre, ascencion, declinacion, coordsX, coordsY):
-        PuntosImagen.__init__(nombre, ascencion, declinacion, coordsX,coordsY)
-
+    def __init__(self, nombre:str, ascencion:int, declinacion:int, coordsX:int, coordsY:int):
+        PuntosImagen.__init__(self,nombre, ascencion, declinacion, coordsX,coordsY)
+        self.XI=0
+        self.PSI=0
+        self.coordenadaX=0
+        self.coordenadaY=0
+        self.ErrorX=0
+        self.ErrorY=0
+        self.asc=0
+        self.dec=0
+        self.error_alpha=0
+        self.error_delta=0
+        self.error_std_xi=0
+        self.error_std_psi=0
 
 def transform_from_json_to_list(file:str, pts_img:bool=True):
     """

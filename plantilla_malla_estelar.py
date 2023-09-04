@@ -134,49 +134,16 @@ def calcularpsi(u1,u2,u4,u5,X,Y):
   return (u5) * ((-1*u2*X)+(u1*Y)+(u4))
 
 
-EstRef =[{
-
-		"Nombre": "Alpheratz",
-		"Ascension": 2.3443,
-		"Declinacion": 29.0926,
-		"X": 613,
-		"Y": 334
-	},
-    {
-
-		"Nombre": "Algenib",
-		"Ascension": 3.5525,
-		"Declinacion": 15.1861,
-		"X": 323,
-		"Y": 374
-	},
-    {
-
-		"Nombre": "Markab",
-		"Ascension": 346.4246,
-		"Declinacion": 15.2080,
-		"X": 327,
-		"Y": 37
-	},
-    {
-
-		"Nombre": "Funda",
-		"Ascension": 345.9486,
-		"Declinacion": 28.0871,
-		"X": 593,
-		"Y": 43
-	}
-
-	]
+EstRef=transform_from_json_to_list("src/EstRef.json", False)
 
 #Se calcula las coordeandas estandar a partir de las coordenadas estelares ec 5.2
 for estrella in EstRef:
-  estrella['xi'] = calcularXestandar(math.radians(estrella['Ascension']),math.radians(estrella['Declinacion']),A,D)
-  estrella['psi'] = calcularYestandar(math.radians(estrella['Ascension']),math.radians(estrella['Declinacion']),A,D)
+  estrella.xi = calcularXestandar(math.radians(estrella.ascencion),math.radians(estrella.declinacion),A,D)
+  estrella.psi = calcularYestandar(math.radians(estrella.ascencion),math.radians(estrella.declinacion),A,D)
 #Para calcular error o diferencia entre las coordenadas estelares se calcula pero esta vez utilizando las ec 5.5
 for estrella in EstRef:
-	estrella['XI'] = calcularxi(u1,u2,u3,u5,estrella['X'],estrella['Y'])
-	estrella['PSI'] = calcularpsi(u1,u2,u4,u5,estrella['X'],estrella['Y'])
+	estrella.XI = calcularxi(u1,u2,u3,u5,estrella.x,estrella.y)
+	estrella.PSI = calcularpsi(u1,u2,u4,u5,estrella.x,estrella.y)
 
 #Con las ecuaciones 5.5 se forma un sistema de ecuaciones para calcular las coordenadsa
 #X,Y de Imagen teniendo parametros u y coordenadas estándar.
@@ -199,26 +166,25 @@ def coordenadaY(u1,u2,u3,u4,u5,psi,xi):
 
 #Se calcula las coordenadas de imagen y el error para cada estrella
 for estrella in EstRef:
-  estrella['coordenadaX'] = round(coordenadaX(u1,u2,u3,u4,u5, estrella['psi'],estrella['xi']))
-  estrella['coordenadaY'] = round(coordenadaY(u1,u2,u3,u4,u5,estrella['psi'],estrella['xi']))
-
-  estrella['Error X'] = round(abs(((estrella['coordenadaX'] - estrella['X']))/abs(estrella['X']))*100,3)
-  estrella['Error Y'] = round(abs(((estrella['coordenadaY'] - estrella['Y']))/abs(estrella['Y']))*100,3)
-EstRef
+  estrella.coordenadaX = round(coordenadaX(u1,u2,u3,u4,u5, estrella.psi,estrella.xi))
+  estrella.coordenadaY = round(coordenadaY(u1,u2,u3,u4,u5,estrella.psi,estrella.xi))
+  estrella.ErrorX = round(abs(((estrella.coordenadaX - estrella.x))/abs(estrella.x))*100,3)
+  estrella.ErrorY = round(abs(((estrella.coordenadaY - estrella.y))/abs(estrella.y))*100,3)
+#EstRef
 
 #A partir las coordeandas de Imagen calculadas se calculan las coordenaas estandar
 #para poder coomparar las coordenadas del cátalogo con las obtenidas a partir del software
 for estrella in EstRef:
-  estrella['Asc'] = round(math.degrees(calcularalpha(u1,u2,u3,u4,u5,estrella['coordenadaX'],estrella['coordenadaY'],A,D)),3)
-  estrella['Dec'] = round(math.degrees(calculardelta(u1,u2,u3,u4,u5,estrella['coordenadaX'],estrella['coordenadaY'],A,D)),3)
-  estrella['Error alpha'] = round(abs(((estrella['Asc'] - estrella['Ascension']))/abs(estrella['Ascension']))*100,3)
-  estrella['Error delta'] = round(abs(((estrella['Dec'] - estrella['Declinacion']))/abs(estrella['Declinacion']))*100,3)
+  estrella.asc = round(math.degrees(calcularalpha(u1,u2,u3,u4,u5,estrella.coordenadaX,estrella.coordenadaY,A,D)),3)
+  estrella.dec = round(math.degrees(calculardelta(u1,u2,u3,u4,u5,estrella.coordenadaX,estrella.coordenadaY,A,D)),3)
+  estrella.error_alpha = round(abs(((estrella.asc - estrella.ascencion))/abs(estrella.ascencion))*100,3)
+  estrella.error_delta = round(abs(((estrella.dec - estrella.declinacion))/abs(estrella.declinacion))*100,3)
 
 #Error de coordenadas estandar
 for estrella in EstRef:
-  estrella['Error estandar XI'] = round(abs(((estrella['XI'] - estrella['xi']))/abs(estrella['xi']))*100,3)
-  estrella['Error estandar PSI'] = round(abs(((estrella['PSI'] - estrella['psi']))/abs(estrella['psi']))*100,3)
-EstRef
+  estrella.error_std_xi = round(abs(((estrella.XI - estrella.xi))/abs(estrella.xi))*100,3)
+  estrella.error_std_psi = round(abs(((estrella.PSI - estrella.psi))/abs(estrella.psi))*100,3)
+#EstRef
 
 import matplotlib.pyplot as plt
 CalStars = pd.DataFrame(EstRef)
