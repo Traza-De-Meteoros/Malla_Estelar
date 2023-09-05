@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from Estelares import transform_from_json_to_list
 from Estelares import PuntosImagen as Puntos_Imagen
+import matplotlib.pyplot as plt
 #M+numero de estacion+numero de camara +DD/Mes/AAAA  HH:MM:SS
 #Estas son las ecuaciones 5.2(pag 37)
 def calcularXestandar(Azimut,Altitud,AzimutObservador,AltitudObservador):
@@ -133,8 +134,8 @@ def calcularxi(u1,u2,u3,u5,X,Y):
 def calcularpsi(u1,u2,u4,u5,X,Y):
   return (u5) * ((-1*u2*X)+(u1*Y)+(u4))
 
-
-EstRef=transform_from_json_to_list("src/EstRef.json", False)
+file_est_ref="src/EstRef.json"
+EstRef=transform_from_json_to_list(file_est_ref, False)
 
 #Se calcula las coordeandas estandar a partir de las coordenadas estelares ec 5.2
 for estrella in EstRef:
@@ -185,11 +186,16 @@ for estrella in EstRef:
   estrella.error_std_xi = round(abs(((estrella.XI - estrella.xi))/abs(estrella.xi))*100,3)
   estrella.error_std_psi = round(abs(((estrella.PSI - estrella.psi))/abs(estrella.psi))*100,3)
 #EstRef
+new_EstRef=[]
+for est in EstRef:
+  local=[est.nombre, est.ascencion,est.declinacion, est.coordenadaX, est.coordenadaY,est.x,est.y]
+  new_EstRef.append(local)
 
-import matplotlib.pyplot as plt
-CalStars = pd.DataFrame(EstRef)
+CalStars = pd.DataFrame(new_EstRef, columns=['Nombre', 'Ascencion', 'Desclinacion', 'coordenadaX', 'coordenadaY', 'X', 'Y'])
+print(CalStars)
 #Se ponde de fondo la imagen de observación
-img = plt.imread("Prueba1.png")
+img_prueba1="src/Prueba1.png"
+img = plt.imread(img_prueba1)
 f = plt.figure()
 f.set_figwidth(10)
 f.set_figheight(10)
@@ -208,5 +214,5 @@ for star in CalStars.index:
 
 plt.imshow(img)
 plt.show()
-CalStars.to_excel("Test estandar.xlsx") #Genera un excell con los resultados obtenidos
+CalStars.to_excel("TestEstandar.xlsx") #Genera un excell con los resultados obtenidos
 
