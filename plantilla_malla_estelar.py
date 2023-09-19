@@ -154,17 +154,18 @@ def calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi):#####MARCA
   return xj,yj
 
 def coordenadaX(u1,u2,u3,u4,u5,psi,xi):
-  coordenadasImagen = calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi)
-  x = coordenadasImagen.item(0)
+  x,y= calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi)
+  print("x:",x)
   return x
 
 def coordenadaY(u1,u2,u3,u4,u5,psi,xi):
-  coordenadasImagen = calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi)
-  y = coordenadasImagen.item(1)
+  x,y = calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi)
+  print("y:",y)
   return y
 
 #Se calcula las coordenadas de imagen y el error para cada estrella
 for estrella in EstRef:
+  print("Estrella:", estrella.nombre)
   estrella.coordenadaX = round(coordenadaX(u1,u2,u3,u4,u5, estrella.psi,estrella.xi))
   estrella.coordenadaY = round(coordenadaY(u1,u2,u3,u4,u5,estrella.psi,estrella.xi))
   estrella.ErrorX = round(abs(((estrella.coordenadaX - estrella.x))/abs(estrella.x))*100,3)
