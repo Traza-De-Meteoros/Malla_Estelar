@@ -114,7 +114,7 @@ def calcularalpha(u1,u2,u3,u4,u5,X,Y,A,D):
   xi = calcularxi(u1,u2,u3,u5,X,Y)
   psi = calcularpsi(u1,u2,u4,u5,X,Y)
   #Ecuacion 5.6 para ascensión
-  alpha = A + math.atan((-xi)/(math.cos(D)-(psi*math.sin(D))))## MARCA
+  alpha = A + math.atan((-xi)/(math.cos(D)-(psi*math.sin(D))))
   return alpha
 
 def calculardelta(u1,u2,u3,u4,u5,X,Y,A,D):
@@ -149,8 +149,8 @@ for estrella in EstRef:
 #Con las ecuaciones 5.5 se forma un sistema de ecuaciones para calcular las coordenadsa
 #X,Y de Imagen teniendo parametros u y coordenadas estándar.
 def calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi):#####MARCA
-  yj=np.divide(1,u5*(np.square(u2) + u1))*(psi-u2*xi)-np.divide(u4,np.square(u2)+u1)
-  xj=np.divide(xi, u1*u5)*(np.divide(1,u2*u1)+1)-np.divide(2*u3,u1)-np.divide(psi,u2*u5*np.square(u1))+np.divide(u4,u2*np.square(u1))
+  yj=(np.divide(1,u5*(np.square(u2) + u1))*(psi-(u2*xi)))-np.divide(u4,np.square(u2)+u1)
+  xj=(np.divide(xi, u1*u5)*(np.divide(1,u2*u1)+1))-(2*np.divide(u3,u1))-np.divide(psi,u2*u5*np.square(u1))+np.divide(u4,u2*np.square(u1))
   return xj,yj
 
 def coordenadaX(u1,u2,u3,u4,u5,psi,xi):
