@@ -169,14 +169,23 @@ def calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi):#####MARCA
   xj=fst_sum"""
   #yj_num=(xi*u2)+(psi*u1)-u5*((u1*u4) +(u2*u3))
   #yj_den=u5*(np.power(u1,2)+np.power(u2,2)) Not solvable
-  yj_num=xi-(u3*u5)
-  yj_den=u2*u5
+  yj_num=(-u5*u1*u4)+(u1*psi)-(u5*u2*u3)+(u2*xi)
+  yj_den=u5*(np.power(u2,2)+np.power(u1,2))
   yj=np.divide(yj_num,yj_den)#Definitely not there
 
   xj_num=(xi*u1)-(psi*u2)-(u1*u3*u5)+(u2*u4*u5)#Almost there
   xj_den=np.power(u1,2)*u5 +np.power(u2,2)*u5
   xj=np.divide(xj_num,xj_den)
   return xj,yj
+
+def heuristic1_avg_error(puntos:list):
+  sumX=0
+  sumY=0
+  for estrella in puntos:
+    sumX+=estrella.ErrorX
+    sumY+=estrella.ErrorY
+  return sumX/len(puntos), sumY/len(puntos)
+
 
 def coordenadaX(u1,u2,u3,u4,u5,psi,xi):
   x,y= calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi)
@@ -189,6 +198,7 @@ def coordenadaY(u1,u2,u3,u4,u5,psi,xi):
   return y
 
 #Se calcula las coordenadas de imagen y el error para cada estrella
+pos=0
 for estrella in EstRef:
   print("Estrella:", estrella.nombre)
   estrella.coordenadaX = round(coordenadaX(u1,u2,u3,u4,u5, estrella.psi,estrella.xi))
@@ -196,6 +206,15 @@ for estrella in EstRef:
   estrella.ErrorX = round(abs(((estrella.coordenadaX - estrella.x))/abs(estrella.x))*100,3)
   estrella.ErrorY = round(abs(((estrella.coordenadaY - estrella.y))/abs(estrella.y))*100,3)
 #EstRef
+
+#Bajamos el promedio de error
+x_error,y_error=heuristic1_avg_error(EstRef)
+print(" errorX:",x_error," errorY:",y_error)
+for estrella in EstRef:
+  estrella.coordenadaX-=x_error
+  estrella.coordenadaY-=y_error
+  estrella.coordenadaY=np.abs(estrella.coordenadaY)
+
 
 #A partir las coordeandas de Imagen calculadas se calculan las coordenaas estandar
 #para poder coomparar las coordenadas del cátalogo con las obtenidas a partir del software
