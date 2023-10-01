@@ -149,8 +149,33 @@ for estrella in EstRef:
 #Con las ecuaciones 5.5 se forma un sistema de ecuaciones para calcular las coordenadsa
 #X,Y de Imagen teniendo parametros u y coordenadas estándar.
 def calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi):#####MARCA
-  yj=(np.divide(1,u5*(np.square(u2) + u1))*(psi-(u2*xi)))-np.divide(u4,np.square(u2)+u1)
-  xj=(np.divide(xi, u1*u5)*(np.divide(1,u2*u1)+1))-(2*np.divide(u3,u1))-np.divide(psi,u2*u5*np.square(u1))+np.divide(u4,u2*np.square(u1))
+  """
+  fr1_yj=np.divide(psi,u5)-u1
+  fr2_yj=np.divide(xi*u2,u1*u5)
+  fr3_yj=np.divide(u2*u3,u1)
+  num_yj=fr1_yj+fr2_yj+fr3_yj
+  den_yj=u1-np.divide(np.power(u2,2),u1)
+  yj=np.divide(num_yj,den_yj)
+
+  fr1_xj=np.divide(psi, (u5*u1)-np.divide(u5*np.power(u2,2),u1))
+  fr2_xj=np.divide(u1,u1- np.divide(np.power(u2,2),u1))
+  fr3_xj=np.divide(xi*u2,np.power(u1,2)*u5 -np.power(u2,2)-np.divide(u5*np.power(u2,2),u1))
+  fr4_xj=np.divide(u2*u3,np.power(u1,2)-np.power(u2,2))
+  fst_sum=fr1_xj-fr2_xj+fr3_xj+fr4_xj
+  fst_sum*=u2
+  fst_sum-=u3
+  fst_sum+=np.divide(xi,u5)
+  fst_sum*=np.divide(1,u1)
+  xj=fst_sum"""
+  #yj_num=(xi*u2)+(psi*u1)-u5*((u1*u4) +(u2*u3))
+  #yj_den=u5*(np.power(u1,2)+np.power(u2,2)) Not solvable
+  yj_num=xi-(u3*u5)
+  yj_den=u2*u5
+  yj=np.divide(yj_num,yj_den)#Definitely not there
+
+  xj_num=(xi*u1)-(psi*u2)-(u1*u3*u5)+(u2*u4*u5)#Almost there
+  xj_den=np.power(u1,2)*u5 +np.power(u2,2)*u5
+  xj=np.divide(xj_num,xj_den)
   return xj,yj
 
 def coordenadaX(u1,u2,u3,u4,u5,psi,xi):
