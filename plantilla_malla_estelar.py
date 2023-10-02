@@ -8,11 +8,13 @@ Original file is located at
 """
 
 import math
+import random
 import numpy as np
 import pandas as pd
 from Estelares import transform_from_json_to_list
 from Estelares import PuntosImagen as Puntos_Imagen
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d, KroghInterpolator
 #M+numero de estacion+numero de camara +DD/Mes/AAAA  HH:MM:SS
 #Estas son las ecuaciones 5.2(pag 37)
 def calcularXestandar(Azimut,Altitud,AzimutObservador,AltitudObservador):
@@ -178,7 +180,7 @@ def calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi):#####MARCA
   xj=np.divide(xj_num,xj_den)
   return xj,yj
 
-def heuristic1_avg_error(puntos:list):
+def avg_error(puntos:list):
   sumX=0
   sumY=0
   for estrella in puntos:
@@ -186,6 +188,42 @@ def heuristic1_avg_error(puntos:list):
     sumY+=estrella.ErrorY
   return sumX/len(puntos), sumY/len(puntos)
 
+def heuristica_error_matching(puntos:list):
+  def grouping_error(puntos:list):
+    errorX_list, errorY_list=[],[]
+    for estrella in puntos:
+      errorX_list.append(estrella.ErrorX)
+      errorY_list.append(estrella.ErrorY)
+    return errorX_list,errorY_list
+  x_list,y_list=grouping_error(puntos)
+  return random.choice(x_list),random.choice(y_list)
+
+
+def grouping_error(puntos:list):
+  errorX_list, errorY_list=[],[]
+  for estrella in puntos:
+    errorX_list.append(estrella.ErrorX)
+    errorY_list.append(estrella.ErrorY)
+  return errorX_list,errorY_list
+# Función de interpolación lineal
+def interpolacion_lineal(x, x1, y1, x2, y2):
+    return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
+def interpolate_linear(x, x_vals, y_vals):
+    for xi in x:
+        # Encontrar los dos puntos más cercanos
+        idx = np.searchsorted(x_vals, xi)
+        if idx>= len(x_vals):
+          idx=len(x_vals)-1
+        if idx<=0:
+          idx=1
+        x1, x2 = x_vals[idx-1], x_vals[idx]
+        if idx>= len(y_vals):
+          idx=len(y_vals)-1
+        if idx<=0:
+          idx=1
+        y1, y2 = y_vals[idx-1], y_vals[idx]
+        yi = interpolacion_lineal(xi, x1, y1, x2, y2)
+        return yi
 
 def coordenadaX(u1,u2,u3,u4,u5,psi,xi):
   x,y= calcularCoordenadasImagen(u1,u2,u3,u4,u5,psi,xi)
@@ -207,13 +245,62 @@ for estrella in EstRef:
   estrella.ErrorY = round(abs(((estrella.coordenadaY - estrella.y))/abs(estrella.y))*100,3)
 #EstRef
 
-#Bajamos el promedio de error
-x_error,y_error=heuristic1_avg_error(EstRef)
+#Bajamos el promedio de error Utilizamos avg_error
+"""
+x_error,y_error=avg_error(EstRef)
 print(" errorX:",x_error," errorY:",y_error)
 for estrella in EstRef:
   estrella.coordenadaX-=x_error
   estrella.coordenadaY-=y_error
   estrella.coordenadaY=np.abs(estrella.coordenadaY)
+"""
+
+"""
+Aplicando heurística error matching
+for estrella in EstRef:
+  x,y=heuristica_error_matching(EstRef)
+  estrella.coordenadaX-=x
+  estrella.coordenadaX-=y
+  estrella.coordenadaX=np.abs(estrella.coordenadaX)
+  estrella.coordenadaY=np.abs(estrella.coordenadaY)
+"""
+
+
+
+"""
+APlicando interpolación lineal
+"""
+def grouping_coordenates(puntos):
+  resultsX,resultsY=[],[]
+  for est in puntos:
+    resultsX.append(est.coordenadaX)
+    resultsY.append(est.coordenadaY)
+  return resultsX,resultsY
+
+x_error_list,y_error_list=grouping_error(EstRef)
+big_x,big_y=grouping_coordenates(EstRef)
+y_interp = interp1d(big_x, x_error_list)
+for estrella in EstRef:
+  errorX=y_interp(estrella.coordenadaX)
+  print("ErrorX:", errorX)
+  estrella.coordenadaX-=errorX
+
+x_error,y_error=avg_error(EstRef)
+print(" errorX:",x_error," errorY:",y_error)
+for estrella in EstRef:
+  estrella.coordenadaY-=y_error
+  estrella.coordenadaY=np.abs(estrella.coordenadaY)
+
+"""
+y_interp = KroghInterpolator(big_y, y_error_list)
+for estrella in EstRef:
+  errorY=y_interp(estrella.coordenadaY)
+  print("ErrorY:", errorY)
+  estrella.coordenadaY+=random.choice([errorY,-errorY])
+  errorY=y_interp(estrella.coordenadaY)
+  print("ErrorY:", errorY)
+  estrella.coordenadaY+=random.choice([errorY,-errorY])
+"""
 
 
 #A partir las coordeandas de Imagen calculadas se calculan las coordenaas estandar
