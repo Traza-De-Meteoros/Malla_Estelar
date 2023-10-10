@@ -1,0 +1,283 @@
+{
+	"Test":{
+		"date": "2023-09-20T20:00:00",
+		"place": "CDMX",
+		"Lat":	"N19-25-42.49"
+		"Lon": "W99-7-39.59"
+		"UTC": "UTC-6"
+		Img = 720 x576
+	}
+	
+	"Stars_Cal": [{
+		
+		"Nombre": "Vega",
+		"Azimut": 335.9144,
+		"Altura": 68.3553,
+		"Ascension": 279.2367,
+		"Declinacion": 38.7908,
+		"X": 330,
+		"Y": 194
+	},
+	{
+		
+		"Nombre": "Eltanin",
+		"Azimut": 337.4744,
+		"Altura": 53.8453,
+		"Ascension": 269.1516,
+		"Declinacion": 51.4942,
+		"X": 320,
+		"Y": 243
+	},
+	{
+		
+		"Nombre": "Rastaban",
+		"Azimut": 333.2309,
+		"Altura": 50.6491,
+		"Ascension": 262.6072,
+		"Declinacion": 52.3068,
+		"X": 310,
+		"Y": 250
+	},
+	{
+		
+		"Nombre": "Grumium",
+		"Azimut": 341.6987,
+		"Altura": 49.1232,
+		"Ascension": 268.3838,
+		"Declinacion": 56.8728,
+		"X": 325,
+		"Y": 260
+	},
+	{
+		
+		"Nombre": "n Her",
+		"Azimut": 308.8325,
+		"Altura": 57.3978,
+		"Ascension": 258.7605,
+		"Declinacion": 36.8141,
+		"X": 273,
+		"Y": 202
+	},
+	{
+		
+		"Nombre": "44 Her",
+		"Azimut": 308.3225,
+		"Altura": 50.7194,
+		"Ascension": 250.7221,
+		"Declinacion": 38.9265,
+		"X": 258,
+		"Y": 220
+	},
+	{
+		
+		"Nombre": "Rutilicus",
+		"Azimut": 296.78225,
+		"Altura": 52.1302,
+		"Ascension": 250.3177,
+		"Declinacion": 31.6094,
+		"X": 234,
+		"Y": 192
+	},
+	{
+		
+		"Nombre": "Fawaris",
+		"Azimut": 9.3695,
+		"Altura": 63.7828,
+		"Ascension": 296.2472,
+		"Declinacion": 45.1359,
+		"X": 374,
+		"Y": 217
+	},
+	{
+		
+		"Nombre": "Sadr",
+		"Azimut": 305.5612,
+		"Altura": 40.2610,
+		"Ascension": 28.6541,
+		"Declinacion": 65.3695,
+		"X": 399,
+		"Y": 203
+	},
+	{
+		
+		"Nombre": "Aljanah",
+		"Azimut": 47.8623,
+		"Altura": 66.1461,
+		"Ascension": 311.5598,
+		"Declinacion": 33.9764,
+		"X": 423,
+		"Y": 182
+	},
+	{
+		
+		"Nombre": "Fawaris III",
+		"Azimut": 61.1662,
+		"Altura": 62.5285,
+		"Ascension": 318.2386,
+		"Declinacion": 30.2301,
+		"X": 451,
+		"Y": 170
+	},
+	{
+		
+		"Nombre": "Deneb",
+		"Azimut": 28.0102,
+		"Altura": 59.2425,
+		"Ascension": 310.3629,
+		"Declinacion": 45.2846,
+		"X": 404,
+		"Y": 222
+	},
+	{
+		
+		"Nombre": "Alderamin",
+		"Azimut": 317.6313,
+		"Altura": 42.3154,
+		"Ascension": 19.6550,
+		"Declinacion": 62.5888,
+		"X": 400,
+		"Y": 281
+	},
+	{
+		
+		"Nombre": "Kabalfird",
+		"Azimut": 13.7388,
+		"Altura": 45.0801,
+		"Ascension": 311.3379,
+		"Declinacion": 61.8470,
+		"X": 389,
+		"Y": 273
+	},
+	{
+		
+		"Nombre": "Alfirk",
+		"Azimut": 12.3166,
+		"Altura": 35.4212,
+		"Ascension": 322.0177,
+		"Declinacion": 70.5643,
+		"X": 390,
+		"Y": 302
+	},
+	{
+		
+		"Nombre": "I cep",
+		"Azimut": 22.0561,
+		"Altura": 32.5083,
+		"Ascension": 342.43,
+		"Declinacion": 66.2027,
+		"X": 416,
+		"Y": 307
+	},
+	{
+		
+		"Nombre": "Errai",
+		"Azimut": 12.1158,
+		"Altura": 24.269,
+		"Ascension": 354.8652,
+		"Declinacion": 77.6336,
+		"X": 393,
+		"Y": 335
+	},
+	{
+		
+		"Nombre": "Caph",
+		"Azimut": 32.6458,
+		"Altura": 25.7524,
+		"Ascension": 2.3065,
+		"Declinacion": 59.1549,
+		"X": 453,
+		"Y": 320
+	},
+	{
+		
+		"Nombre": "Shedar",
+		"Azimut": 35.5920,
+		"Altura": 21.6418,
+		"Ascension":10.1366,
+		"Declinacion": 56.5376,
+		"X": 470,
+		"Y": 332
+	},
+	{
+		
+		"Nombre": "Navi",
+		"Azimut": 30.9928,
+		"Altura": 60.7167,
+		"Ascension":14.1876,
+		"Declinacion": 60.7167,
+		"X": 456,
+		"Y": 342
+	},
+	{
+		
+		"Nombre": "Ksora",
+		"Azimut": 30.9866,
+		"Altura": 16.1839,
+		"Ascension": 21.4649,
+		"Declinacion": 60.2365,
+		"X": 462,
+		"Y": 355
+	},
+	{
+		
+		"Nombre": "Alkaid",
+		"Azimut": 316.7088,
+		"Altura": 18.7826,
+		"Ascension": 206.875,
+		"Declinacion": 49.3163,
+		"X": 221,
+		"Y": 334
+	},
+	{
+		
+		"Nombre": "Mizar",
+		"Azimut": 323.1333,
+		"Altura": 16.1347,
+		"Ascension": 200.9745,
+		"Declinacion": 54.9283,
+		"X": 235,
+		"Y": 352
+	},
+	{
+		
+		"Nombre": "Alioth",
+		"Azimut": 325,2050,
+		"Altura": 12.2628,
+		"Ascension": 193.4996,
+		"Declinacion": 55.9624,
+		"X": 235,
+		"Y": 369
+	},
+	{
+		
+		"Nombre": "Phecda",
+		"Azimut": 326.4705,
+		"Altura": 3.4108,
+		"Ascension": 178.4500,
+		"Declinacion": 53.6961,
+		"X": 225,
+		"Y": 412
+	},
+	{
+		
+		"Nombre": "Merak",
+		"Azimut": 332.8428,
+		"Altura": -1.2674,
+		"Ascension": 165.45,
+		"Declinacion": 56.3827,
+		"X": 246,
+		"Y": 438
+	},
+	{
+		
+		"Nombre": "Dubhe",
+		"Azimut": 336.8607,
+		"Altura": 2.3031,
+		"Ascension": 165.9199,
+		"Declinacion": 61.752,
+		"X": 270,
+		"Y": 419
+	}
+	]
+	
+}
