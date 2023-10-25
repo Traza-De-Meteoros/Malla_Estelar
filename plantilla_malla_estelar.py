@@ -30,7 +30,7 @@ def calcularYestandar(Azimut,Altitud,AzimutObservador,AltitudObservador):
   return  y
 
 
-PuntosImagen:list=transform_from_json_to_list("src/PuntosImagen.json")
+PuntosImagen:list=transform_from_json_to_list("src/NorteCDMX.json")
 
 
 #Esta parte son las ecuaciones 5.1
@@ -136,7 +136,7 @@ def calcularxi(u1,u2,u3,u5,X,Y):
 def calcularpsi(u1,u2,u4,u5,X,Y):
   return (u5) * ((-1*u2*X)+(u1*Y)+(u4))
 
-file_est_ref="src/EstRef.json"
+file_est_ref="src/NorteCDMX.json"
 EstRef=transform_from_json_to_list(file_est_ref, False)
 
 #Se calcula las coordeandas estandar a partir de las coordenadas estelares ec 5.2
@@ -284,23 +284,25 @@ for estrella in EstRef:
   errorX=y_interp(estrella.coordenadaX)
   print("ErrorX:", errorX)
   estrella.coordenadaX-=errorX
-
+"""
 x_error,y_error=avg_error(EstRef)
 print(" errorX:",x_error," errorY:",y_error)
 for estrella in EstRef:
   estrella.coordenadaY-=y_error
   estrella.coordenadaY=np.abs(estrella.coordenadaY)
-
 """
+
+
+
 y_interp = KroghInterpolator(big_y, y_error_list)
 for estrella in EstRef:
   errorY=y_interp(estrella.coordenadaY)
   print("ErrorY:", errorY)
-  estrella.coordenadaY+=random.choice([errorY,-errorY])
+  #estrella.coordenadaY+=random.choice([errorY,-errorY])
   errorY=y_interp(estrella.coordenadaY)
   print("ErrorY:", errorY)
-  estrella.coordenadaY+=random.choice([errorY,-errorY])
-"""
+  estrella.coordenadaY-=errorY#+=random.choice([errorY,-errorY])#-=errorY#
+  estrella.coordenadaY=np.abs(estrella.coordenadaY)
 
 
 #A partir las coordeandas de Imagen calculadas se calculan las coordenaas estandar
@@ -324,7 +326,7 @@ for est in EstRef:
 CalStars = pd.DataFrame(new_EstRef, columns=['Nombre', 'Ascencion', 'Desclinacion', 'coordenadaX', 'coordenadaY', 'X', 'Y'])
 print(CalStars)
 #Se ponde de fondo la imagen de observación
-img_prueba1="src/Prueba1.png"
+img_prueba1="src/NorteCDMX.jpg"
 img = plt.imread(img_prueba1)
 f = plt.figure()
 f.set_figwidth(10)
